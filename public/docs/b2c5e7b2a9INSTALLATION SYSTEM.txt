@@ -1,0 +1,117 @@
+before install we update and upgrade server
+1. sudo apt update
+2. sudo apt upgrade
+----------------------------------------------------------------
+
+then install webmin (file manager)
+
+1. wget http://software.virtualmin.com/gpl/scripts/install.sh
+2. sudo /bin/sh install.sh
+or 
+
+use winSCP
+
+DOWNLOAD 
+
+1. https://winscp.net/eng/download.php
+-----------------------------------------------------------------------
+
+Then we install odoo14
+--------------------------------------------------------------
+https://linuxize.com/post/how-to-install-odoo-14-on-ubuntu-20-04/
+--------------------------------------------------------------
+
+
+server odoo
+----------- stop server odoo14 ---------------------
+------------------
+sudo systemctl stop odoo14.service
+sudo systemctl stop odoo14
+----------------------------------------------------------
+
+---------- start server odoo14 ---------------------
+sudo systemctl start odoo14.service
+sudo systemctl start odoo14
+--------------------------------------------------------
+
+---------- stop & start server odoo14 ---------------------
+sudo systemctl restart odoo14.service
+sudo systemctl restart odoo14
+
+
+---------------------------------------------------------------
+
+UNISTALL APACHE2
+-----------------
+1. sudo service apache2 stop
+
+2. sudo systemctl disable apache2
+
+3. sudo apt remove apache2
+
+4. sudo apt-get purge apache2 apache2-utils apache2.2-bin apache2-common
+
+5. sudo apt-get autoremove
+
+6. whereis apache2
+	apache2: /etc/apache2
+
+7. sudo rm -rf /etc/apache2
+
+---------------------------------------------------------------
+
+
+then we install Nginx(fast and secure)
+---------------------------------------------------------------
+installation nginx
+------
+https://linuxize.com/post/how-to-install-nginx-on-ubuntu-20-04/
+
+
+------------------------------------------------------
+installation ufw or firewall
+https://linuxize.com/post/how-to-setup-a-firewall-with-ufw-on-ubuntu-20-04/
+------------------------------------
+
+
+installing Secure Nginx with Let's Encrypt
+https://linuxize.com/post/secure-nginx-with-let-s-encrypt-on-ubuntu-20-04/
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
+To remove nginx default
+sudo rm /etc/nginx/sites-enabled/default
+sudo rm /etc/nginx/sites-available/default
+--------------------------------------------------------------
+
+
+ERROR (413 Request Entity Too Large)
+ADD /ETC/NGINX/NGINX.CONF
+AFTER LINE
+include /etc/nginx/conf.d/*.conf;
+include /etc/nginx/sites-enabled/*;
+--------BELOW-------------------
+client_max_body_size 100M;
+
+
+----------------------------------
+CPU INFO
+grep -c ^processor /proc/cpuinfo
+
+-------------------------------------
+RAM INFO
+free -m
+
+
+
+
+-----------------------------------------------------
+static ip address:
+https://learnubuntu.com/set-static-ip/
+https://linuxize.com/post/how-to-configure-static-ip-address-on-ubuntu-20-04/
+
+
+----------------------------------------------
+to clear history in command line 
+history -c
+--------------------------------------------------------------------------

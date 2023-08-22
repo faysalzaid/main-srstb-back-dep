@@ -1,0 +1,27 @@
+public IP - 196.191.40.144/28
+
+KDU
+-VMware- ubuntu App Server - 192.168.6.4
+-VMware- Ubuntu DB server   -192.168.6.3
+Fortigate Mgmt IP -192.168.6.5
+Router IP- 192.168.99.1
+
+Database Server 
+-IP 192.168.6.7 -- 196.191.40.145
+-user name - dbadmin
+-pass- P@$$w0rd
+
+APP Server 
+-IP 192.168.6.8 --- 196.191.40.146
+-user name - kduadmin
+-pass- P@$$w0rd
+
+Priamry DNS server
+IP- 192.168.6.9
+username dnsadmin
+Pass- P@$$w0rd
+
+Secondary DNS server
+IP- 192.168.6.10
+username dnsadmin
+Pass- P@$$w0rd
