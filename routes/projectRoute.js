@@ -126,7 +126,7 @@ route.post('/:id', verifyJwt, async(req, res) => {
 })
 
 
-route.post('/approve/:id', verifyJwt, async(req, res) => {
+route.post('/approve/:id', async(req, res) => {
     const id = req.params.id
     const fProject = await Project.findOne({
         where: { id },

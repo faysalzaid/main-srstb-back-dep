@@ -57,7 +57,7 @@ route.put('/:id', verifyjwt, async(req, res) => {
         if (!req.files) {
             timesheet.EmployeeId = data.EmployeeId
             timesheet.date = data.date
-            timesheet.save()
+            await timesheet.save()
             return res.json(timesheet)
         }
         const attachment = req.files.attachment
@@ -67,7 +67,7 @@ route.put('/:id', verifyjwt, async(req, res) => {
         timesheet.EmployeeId = data.EmployeeId
         timesheet.attachment = savedAttachmentUrl
         timesheet.date = data.date
-        timesheet.save()
+        await timesheet.save()
         res.json(timesheet)
     } catch (error) {
         const msg = error.errors ? error.errors[0].message : 'An error Ocurred'

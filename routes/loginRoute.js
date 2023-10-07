@@ -38,7 +38,8 @@ route.post('/', async(req, res) => {
         const accessToken = generateAccessToken(user)
 
         res.status(202).cookie('accessToken', accessToken, {
-            sameSite: "strict",
+            sameSite: "None",
+            secure:true,
             path: "/",
             expiresIn: 24 * 60 * 60 * 1000,
             httpOnly: true,
@@ -66,7 +67,8 @@ route.post('/refreshToken', async(req, res) => {
                 // console.log('This is teh found user', fUser);
             const newAccessToken = generateAccessToken(fUser)
             return res.status(202).cookie('accessToken', newAccessToken, {
-                sameSite: "strict",
+                sameSite: "None",
+                secure:true,
                 path: "/",
                 expiresIn: 24 * 60 * 60 * 1000,
                 httpOnly: true,

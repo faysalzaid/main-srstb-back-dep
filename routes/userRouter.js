@@ -21,10 +21,8 @@ route.get('/', verifyJWT, async(req, res) => {
     // console.log('CURRENT USER :', req.user);
     try {
         const users = await User.findAll({
-            include: [SlipPaper, Project],
-            order: [
-                ['name', 'ASC']
-            ]
+            include: [Project],
+          
         })
         res.json(users)
 

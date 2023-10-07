@@ -22,7 +22,7 @@ const appraisal = db.define('appraisal', {
 
 
 }, {
-    timestamps: true
+    timestamps: false
 })
 
 // contract.hasMany(User)

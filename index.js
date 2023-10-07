@@ -43,6 +43,7 @@ const blogRoute = require('./routes/blogRoute')
 const blogCategoryRoute = require('./routes/blogCategoryRoute')
 const projectReportRoute = require('./routes/projectReportRoute')
 const letterRequestRoute = require('./routes/letterRequestRoute')
+const membersRoute = require('./routes/membersRoute')
     // End of route imports
 
 // const axi = require('./axi/axi')
@@ -58,7 +59,7 @@ const { employeeModel } = require('./models/employeeModel')
 const designationModel = require('./models/designationModel')
 const budgetModel = require('./models/budgetModel')
 const bidModel = require('./models/bidModel');
-const slipModel = require('./models/slipModel')
+// const slipModel = require('./models/slipModel')
 const areaModel = require('./models/areaModel')
 const contractModel = require('./models/contractModel')
 const contractTypeModel = require('./models/contractTypeModel')
@@ -73,7 +74,7 @@ const PayrolModel = require('./models/payrolModel')
 const CandidateModel = require('./models/candidatesModel')
 const Monthlytimesheet = require('./models/monthlytimesheetModel')
 const AgreementModel = require('./models/agreementModel')
-const AppraisalModel = require('./models/appraisalModels')
+// const AppraisalModel = require('./models/appraisalModels')
 const JobOfferModel = require('./models/jobOfferLetterModel')
 const MedicalAllowanceModel = require('./models/medicalAllowanceModel')
 const SettingsModel = require('./models/settingsModel')
@@ -85,7 +86,7 @@ const BlogModel = require('./models/blogModel')
 const BlogCategoryModel = require('./models/blogCategoryModel')
 const projectReportModel = require('./models/projectReportModel')
 const letterRequestModel = require('./models/letterRequestModel')
-
+const membersModel = require('./models/membersModel')
 // END OF MODELS URLS
 require('dotenv').config()
 const bodyParser = require('body-parser')
@@ -140,8 +141,8 @@ User.hasOne(invoiceModel, { onDelete: "SET NULL" })
 invoiceModel.hasMany(paymentModel, { onDelete: "SET NULL" })
 
 ProjectModel.hasMany(bidModel, { foreignKey: 'ProjectId' }, { onDelete: "SET NULL", onUpdate: "cascade" })
-ProjectModel.hasOne(slipModel, { onDelete: 'cascade' })
-User.hasMany(slipModel, { onDelete: 'SET NULL' })
+// ProjectModel.hasOne(slipModel, { onDelete: 'cascade' })
+// User.hasMany(slipModel, { onDelete: 'SET NULL' })
 User.hasOne(contractModel, { onDelete: "SET NULL" })
 ProjectModel.hasOne(contractModel, { onDelete: "SET NULL" })
 contractTypeModel.hasOne(contractModel, { onDelete: "SET NULL" })
@@ -162,7 +163,7 @@ departmentModel.hasMany(PayrolModel)
 employeeModel.hasMany(PayrolModel)
 employeeModel.hasMany(Monthlytimesheet)
 employeeModel.hasOne(JobOfferModel)
-employeeModel.hasMany(AppraisalModel)
+// employeeModel.hasMany(AppraisalModel)
 employeeModel.hasMany(MedicalAllowanceModel)
 employeeModel.hasOne(AgreementModel)
 departmentModel.hasMany(arvhiveModel)
@@ -186,7 +187,7 @@ letterRequestModel.belongsTo(User)
 app.use(cors({
     // origin: `${process.env.MAIN_URL}`,
     credentials: true,
-    origin: ["http://localhost:5173", process.env.MAIN_URL],
+    origin: ["http://localhost:5173", process.env.MAIN_URL,'http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Add the allowed methods
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
 }))
@@ -228,7 +229,7 @@ app.use('/settings', settingsRoute)
 app.use('/joboffer', jobOfferRoute)
 app.use('/agreement', agreementRoute)
 app.use('/medical', medicalRoute)
-app.use('/appraisal', appraisalRoute)
+// app.use('/appraisal', appraisalRoute)
 app.use('/archive', archiveRoute)
 app.use('/comment', projectCommentRoute)
 app.use('/awardletter', awardLetterRoute)
@@ -237,6 +238,7 @@ app.use('/blog', blogRoute)
 app.use('/blogCategory', blogCategoryRoute)
 app.use('/projectReport', projectReportRoute)
 app.use('/requestLetter', letterRequestRoute)
+app.use('/members',membersRoute)
     // END OF ROUTES          
 
 
@@ -274,10 +276,10 @@ app.post('/', async(req, res) => {
     const data = req.body
         // console.log('This is from server files  ', req.files);
     try {
-        if (req.files === null) return res.send({ error: "All docs are required" })
+        if (req.files === null) return res.send({ error: "All docs are required" }) 
 
         const license = req.files.license
-        const performa = req.files.performa
+        const performa = req.files.performa 
         const proposal = req.files.proposal
         const companydoc = req.files.companydoc
         const savedLicense = `${ crypto.randomBytes(5).toString('hex') }

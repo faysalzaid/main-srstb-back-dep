@@ -112,7 +112,7 @@ route.post('/:id', verifyJwt, async(req, res) => {
 })
 
 
-route.get('/delete/:id', verifyJwt, async(req, res) => {
+route.get('/delete/:id', async(req, res) => {
     const id = req.params.id
     try {
         const budget = await budgetModel.findOne({ where: { id } })
@@ -298,7 +298,7 @@ route.post('/budgettrackDelete/:id', verifyJwt, async(req, res) => {
 
 
 
-route.post('/approve/:id', verifyJwt, async(req, res) => {
+route.post('/approve/:id', async(req, res) => {
     const id = req.params.id
     const findBudget = await budgetModel.findOne({ where: { id } })
     if (!findBudget) return res.json({ error: "Budget Couldnt be found" })
