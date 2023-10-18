@@ -48,7 +48,7 @@ route.put('/:id', verifyjwt, async(req, res) => {
         const member = await membersModel.findOne({ where: { id } })
         if (!member) return res.send({ error: 'member Not Found' })
         if (!req.files) {
-            member.name = data.name
+            member.Name = data.name
             member.position = data.position
             member.description = data.description
             await member.save()
@@ -58,7 +58,7 @@ route.put('/:id', verifyjwt, async(req, res) => {
         const savedimage = `${crypto.randomBytes(4).toString('hex')}${image.name}`
         image.mv(`./public/profiles/${savedimage}`)
         const savedimageUrl = `${process.env.PROFILE_URL}/${savedimage}`
-        member.name = data.name
+        member.Name = data.name
         member.position = data.position
         member.description = data.description
         member.image = savedimageUrl

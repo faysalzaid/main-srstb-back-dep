@@ -17,6 +17,9 @@ const projectReport = require('../models/projectReportModel')
 const Invoice = require('../models/invoiceModel')
 const yearlyBudget = require('../models/budgetModel')
 const contractModel = require('../models/contractModel')
+const OrderFile = require('../models/orderFileModel')
+const designFileModel = require('../models/designFileModel')
+const VariationFile = require('../models/variationFileModel')
 require('moment/locale/af')
 moment.locale('af');
 
@@ -60,6 +63,9 @@ route.get('/:id', verifyJwt, async(req, res) => {
                 },
                 { model: invoiceModel },
                 { model: procurementModel },
+                { model: OrderFile},
+                { model: VariationFile},
+                { model: designFileModel},
                 {
                     model: projectReport,
                     order: [

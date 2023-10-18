@@ -43,8 +43,7 @@ route.post('/', async(req, res) => {
             path: "/",
             expiresIn: 24 * 60 * 60 * 1000,
             httpOnly: true,
-        });
-        return res.setHeader('Authorization', `Bearer ${accessToken}`).json({ token: accessToken, id: user.id, name: user.name, email: user.email, role: user.role, image: user.image, refreshToken: refreshToken });
+        }).json({ id: user.id, name: user.name, email: user.email, role: user.role, image: user.image, refreshToken: refreshToken });
     } catch (error) {
         const msg = error.errors ? error.errors[0].message : 'An error Ocurred'
         res.json({ error: msg })
@@ -72,7 +71,7 @@ route.post('/refreshToken', async(req, res) => {
                 path: "/",
                 expiresIn: 24 * 60 * 60 * 1000,
                 httpOnly: true,
-            }).send({ token: newAccessToken, id: fUser.id, name: fUser.name, email: fUser.email, role: fUser.role, image: fUser.image, refreshToken: fUser.refreshToken })
+            }).send({id: fUser.id, name: fUser.name, email: fUser.email, role: fUser.role, image: fUser.image, refreshToken: fUser.refreshToken })
         })
     } catch (error) {
         const msg = error.errors ? error.errors[0].message : 'An error Ocurred'

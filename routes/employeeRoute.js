@@ -8,7 +8,6 @@ const path = require('path');
 const verifyJwt = require('../middlewares/verifyJwt');
 const jobOffer = require('../models/jobOfferLetterModel');
 const medicalAllowance = require('../models/medicalAllowanceModel')
-const appraisalModel = require('../models/appraisalModels')
 const agreementModel = require('../models/agreementModel')
 const monthlytimesheetModel = require('../models/monthlytimesheetModel')
     // bcrypt = require('bcrypt')
@@ -37,7 +36,7 @@ route.get('/:id', verifyJwt, async(req, res) => {
 
     const id = req.params.id
     try {
-        const Employee = await employeeModel.findOne({ where: { id }, include: [jobOffer, agreementModel, medicalAllowance, appraisalModel, monthlytimesheetModel] })
+        const Employee = await employeeModel.findOne({ where: { id }, include: [jobOffer, agreementModel, medicalAllowance, monthlytimesheetModel] })
         if (!Employee) return res.send({ error: "Employee Not Found" })
         res.json(Employee)
     } catch (error) {

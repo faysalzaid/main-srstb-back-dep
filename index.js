@@ -44,6 +44,11 @@ const blogCategoryRoute = require('./routes/blogCategoryRoute')
 const projectReportRoute = require('./routes/projectReportRoute')
 const letterRequestRoute = require('./routes/letterRequestRoute')
 const membersRoute = require('./routes/membersRoute')
+const roadRoute = require('./routes/roadRoute')
+const procurementFileRoute = require('./routes/procurementFileRoute')
+const orderFileRoute = require('./routes/orderFileRoute')
+const variationFileRoute = require('./routes/variationFileRoute')
+const designFileRoute = require('./routes/designFileRoute')
     // End of route imports
 
 // const axi = require('./axi/axi')
@@ -87,6 +92,11 @@ const BlogCategoryModel = require('./models/blogCategoryModel')
 const projectReportModel = require('./models/projectReportModel')
 const letterRequestModel = require('./models/letterRequestModel')
 const membersModel = require('./models/membersModel')
+const RoadModel = require('./models/RoadModel')
+const procurementFileModel = require('./models/procurementFileModel')
+const orderFileModel = require('./models/orderFileModel')
+const variationFileModel = require('./models/variationFileModel')
+const designFileModel = require('./models/designFileModel')
 // END OF MODELS URLS
 require('dotenv').config()
 const bodyParser = require('body-parser')
@@ -180,6 +190,15 @@ ProjectModel.hasMany(projectReportModel)
 projectReportModel.belongsTo(ProjectModel)
 User.hasMany(letterRequestModel)
 letterRequestModel.belongsTo(User)
+procurementModel.hasMany(procurementFileModel)
+procurementFileModel.belongsTo(procurementModel)
+ProjectModel.hasMany(orderFileModel)
+orderFileModel.belongsTo(ProjectModel)
+ProjectModel.hasMany(designFileModel)
+designFileModel.belongsTo(ProjectModel)
+ProjectModel.hasMany(variationFileModel)
+variationFileModel.belongsTo(ProjectModel)
+
     // ENDOF ASSOCIATIONS
 
 
@@ -239,6 +258,11 @@ app.use('/blogCategory', blogCategoryRoute)
 app.use('/projectReport', projectReportRoute)
 app.use('/requestLetter', letterRequestRoute)
 app.use('/members',membersRoute)
+app.use('/roads',roadRoute)
+app.use('/procFile',procurementFileRoute)
+app.use('/orderFile',orderFileRoute)
+app.use('/variationFile',variationFileRoute)
+app.use('/designFile',designFileRoute)
     // END OF ROUTES          
 
 
