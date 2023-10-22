@@ -23,7 +23,7 @@ const User = db.define('User', {
 
     },
     role: {
-        type: Sequelize.ENUM('admin', 'manager', 'finance','financeAdmin', 'design', 'client', 'roadquality', 'engineer', 'contractadmin', 'hr', 'planning', 'pRelation'),
+        type: Sequelize.ENUM('admin', 'manager', 'finance','financeAdmin', 'design','designAdmin', 'client', 'roadquality','roadqualityAdmin', 'engineer', 'contractadmin','contract', 'hr', 'planning','planningAdmin', 'pRelation'),
         defaultValue: 'client',
         allowNull: true
     },
