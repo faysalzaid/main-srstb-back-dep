@@ -11,13 +11,13 @@ const verifyJWT = require('../middlewares/verifyJwt')
 
 
 const generateAccessToken = (user) => {
-    return jwt.sign({ id: user.id, username: user.name, email: user.email, role: user.role, image: user.image, refreshToken: user.refreshToken }, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: '7d',
-    });
+    return jwt.sign({ id: user.id, username: user.name, email: user.email, role: user.role, image: user.image, refreshToken: user.refreshToken }, process.env.ACCESS_TOKEN_SECRET);
 };
 
 const generateRefreshToken = (user) => {
-    return jwt.sign({ id: user.id, username: user.name, email: user.email, role: user.role, image: user.image }, process.env.REFRESH_TOKEN_SECRET);
+    const expiresIn = 60 * 60 * 24 * 30; // 30 days in seconds
+    const expirationTime = Math.floor(Date.now() / 1000) + expiresIn; // Current time + 30 days
+    return jwt.sign({ id: user.id, username: user.name, email: user.email, role: user.role, image: user.image, }, process.env.REFRESH_TOKEN_SECRET);
 };
 
 
@@ -41,7 +41,6 @@ route.post('/', async(req, res) => {
             sameSite: "None",
             secure:true,
             path: "/",
-            expiresIn: 24 * 60 * 60 * 1000,
             httpOnly: true,
         }).json({ id: user.id, name: user.name, email: user.email, role: user.role, image: user.image, refreshToken: refreshToken });
     } catch (error) {
@@ -58,7 +57,7 @@ route.post('/refreshToken', async(req, res) => {
     // will take the refresh token from user 
     try {
         const id = req.body.id
-        const fUser = await User.findOne({ where: { id: id } })
+        const fUser = await User.findOne({ where: { id:id } })
             // console.log(":::::::::::::::::UserONe", fUser, "::::::::::::::")
         if (!fUser) return res.send('Not Authorized Please Login')
         jwt.verify(fUser.refreshToken, process.env.REFRESH_TOKEN_SECRET, async(err, DECODED) => {
@@ -69,7 +68,7 @@ route.post('/refreshToken', async(req, res) => {
                 sameSite: "None",
                 secure:true,
                 path: "/",
-                expiresIn: 24 * 60 * 60 * 1000,
+                // expiresIn: 24 * 60 * 60 * 1000,
                 httpOnly: true,
             }).send({id: fUser.id, name: fUser.name, email: fUser.email, role: fUser.role, image: fUser.image, refreshToken: fUser.refreshToken })
         })

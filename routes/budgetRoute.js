@@ -18,13 +18,25 @@ moment.locale('af');
 
 route.get('/', verifyJwt, async(req, res) => {
     try {
-        const budget = await budgetModel.findAll({ include: [budgetTrackModel] })
+        const budget = await budgetModel.findAll({ include: [budgetTrackModel,Project] })
         res.json(budget)
     } catch (error) {
         const msg = error.errors ? error.errors[0].message : 'An error Ocurred'
         res.json({ error: msg })
     }
 })
+
+
+route.get('/tracks', verifyJwt, async(req, res) => {
+    try {
+        const budget = await budgetTrackModel.findAll({ include: [{model:budgetModel,include:[Project]}] })
+        res.json(budget)
+    } catch (error) {
+        const msg = error.errors ? error.errors[0].message : 'An error Ocurred'
+        res.json({ error: msg })
+    }
+})
+
 
 
 

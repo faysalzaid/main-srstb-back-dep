@@ -26,6 +26,21 @@ route.get('/', verifyJwt, async(req, res) => {
 })
 
 
+route.get('/single/:id', verifyJwt, async(req, res) => {
+    try {
+        const id = req.params.id
+        const design = await designFileModel.findAll({ where:{ProjectId:id} })
+        res.status(200).json(design)
+
+    } catch (error) {
+        const msg = error.errors ? error.errors[0].message : 'An error Ocurred'
+        res.json({ error: msg })
+
+    }
+
+})
+
+
 route.get('/:id', verifyJwt, async(req, res) => {
     try {
         const id = req.params.id
@@ -127,7 +142,7 @@ route.delete('/:id', verifyJwt, async(req, res) => {
         const id = req.params.id
         const design = await designFileModel.findOne({ where: { id } })
         if (!design) return res.status(404).json({ error: "Design Not Found" })
-        design.destroy()
+        await design.destroy()
         res.status(200).send('deleted Successfully')
 
     } catch (error) {

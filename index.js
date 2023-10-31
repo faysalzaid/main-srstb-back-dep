@@ -49,6 +49,7 @@ const procurementFileRoute = require('./routes/procurementFileRoute')
 const orderFileRoute = require('./routes/orderFileRoute')
 const variationFileRoute = require('./routes/variationFileRoute')
 const designFileRoute = require('./routes/designFileRoute')
+const softProjectRoute = require('./routes/softProjectRoute')
     // End of route imports
 
 // const axi = require('./axi/axi')
@@ -97,6 +98,7 @@ const procurementFileModel = require('./models/procurementFileModel')
 const orderFileModel = require('./models/orderFileModel')
 const variationFileModel = require('./models/variationFileModel')
 const designFileModel = require('./models/designFileModel')
+const softProject = require('./models/softProjectModel')
 // END OF MODELS URLS
 require('dotenv').config()
 const bodyParser = require('body-parser')
@@ -130,6 +132,8 @@ ProjectModel.hasMany(budgetModel, {
     onUpdate: "cascade"
 })
 
+budgetModel.belongsTo(ProjectModel)
+
 User.hasOne(bidModel, {
     onDelete: 'cascade'
 })
@@ -162,6 +166,7 @@ User.hasOne(CompanyModel)
 CompanyModel.hasMany(ProjectModel)
 ProjectModel.belongsTo(CompanyModel)
 budgetModel.hasMany(budgetTrackModel)
+budgetTrackModel.belongsTo(budgetModel)
 departmentModel.hasMany(LeaveModel)
 employeeModel.hasMany(LeaveModel)
 LeaveModel.belongsTo(employeeModel)
@@ -263,6 +268,7 @@ app.use('/procFile',procurementFileRoute)
 app.use('/orderFile',orderFileRoute)
 app.use('/variationFile',variationFileRoute)
 app.use('/designFile',designFileRoute)
+app.use('/softProject',softProjectRoute)
     // END OF ROUTES          
 
 

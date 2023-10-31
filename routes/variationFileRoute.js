@@ -26,6 +26,21 @@ route.get('/', verifyJwt, async(req, res) => {
 })
 
 
+route.get('/single/:id', verifyJwt, async(req, res) => {
+    try {
+        const id = req.params.id
+        const variation = await variationFileModel.findAll({ where:{ProjectId:id} })
+        res.status(200).json(variation)
+
+    } catch (error) {
+        const msg = error.errors ? error.errors[0].message : 'An error Ocurred'
+        res.json({ error: msg })
+
+    }
+
+})
+
+
 route.get('/:id', verifyJwt, async(req, res) => {
     try {
         const id = req.params.id
