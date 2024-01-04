@@ -14,9 +14,7 @@ const generateAccessToken = (user) => {
     return jwt.sign({ id: user.id, username: user.name, email: user.email, role: user.role, image: user.image, refreshToken: user.refreshToken }, process.env.ACCESS_TOKEN_SECRET);
 };
 
-const generateRefreshToken = (user) => {
-    const expiresIn = 60 * 60 * 24 * 30; // 30 days in seconds
-    const expirationTime = Math.floor(Date.now() / 1000) + expiresIn; // Current time + 30 days
+const generateRefreshToken = (user) => {// Current time + 30 days
     return jwt.sign({ id: user.id, username: user.name, email: user.email, role: user.role, image: user.image, }, process.env.REFRESH_TOKEN_SECRET);
 };
 
@@ -41,6 +39,7 @@ route.post('/', async(req, res) => {
             sameSite: "None",
             secure:true,
             path: "/",
+            expiresIn: 24 * 60 * 60 * 1000,
             httpOnly: true,
         }).json({ id: user.id, name: user.name, email: user.email, role: user.role, image: user.image, refreshToken: refreshToken });
     } catch (error) {
@@ -68,7 +67,7 @@ route.post('/refreshToken', async(req, res) => {
                 sameSite: "None",
                 secure:true,
                 path: "/",
-                // expiresIn: 24 * 60 * 60 * 1000,
+                expiresIn: 24 * 60 * 60 * 1000,
                 httpOnly: true,
             }).send({id: fUser.id, name: fUser.name, email: fUser.email, role: fUser.role, image: fUser.image, refreshToken: fUser.refreshToken })
         })

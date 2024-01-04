@@ -50,6 +50,7 @@ const orderFileRoute = require('./routes/orderFileRoute')
 const variationFileRoute = require('./routes/variationFileRoute')
 const designFileRoute = require('./routes/designFileRoute')
 const softProjectRoute = require('./routes/softProjectRoute')
+const softProjectItemRoute = require('./routes/softProjectItemRoute')
     // End of route imports
 
 // const axi = require('./axi/axi')
@@ -99,6 +100,7 @@ const orderFileModel = require('./models/orderFileModel')
 const variationFileModel = require('./models/variationFileModel')
 const designFileModel = require('./models/designFileModel')
 const softProject = require('./models/softProjectModel')
+const softProjectItem = require('./models/softProjectItemsModel')
 // END OF MODELS URLS
 require('dotenv').config()
 const bodyParser = require('body-parser')
@@ -269,6 +271,7 @@ app.use('/orderFile',orderFileRoute)
 app.use('/variationFile',variationFileRoute)
 app.use('/designFile',designFileRoute)
 app.use('/softProject',softProjectRoute)
+app.use('/softProjectItem',softProjectItemRoute)
     // END OF ROUTES          
 
 

@@ -1,8 +1,8 @@
 const express = require('express')
 
 const route = express.Router()
-// softProject = require('../models/softProjectModel')
 const softProjectModel = require('../models/softProjectModel')
+const softProjectItemsModel = require('../models/softProjectItemsModel')
 bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const verifyJwt = require('../middlewares/verifyJwt')
@@ -12,7 +12,7 @@ const verifyJwt = require('../middlewares/verifyJwt')
 
 route.get('/', verifyJwt,async(req, res) => {
     try {
-        const softProject = await softProjectModel.findAll()
+        const softProject = await softProjectItemsModel.findAll()
         res.json(softProject)
     } catch (error) {
         res.send({ error: error.message })
@@ -25,7 +25,7 @@ route.get('/', verifyJwt,async(req, res) => {
 route.get('/:id', verifyJwt,async(req, res) => {
     const id = req.params.id
     try {
-        const softProject = await softProjectModel.findOne({ where: { id } })
+        const softProject = await softProjectItemsModel.findOne({ where: { id } })
         if (!softProject) return res.send({ error: "Project Not Found" })
         res.json(softProject)
     } catch (error) {
@@ -36,26 +36,15 @@ route.get('/:id', verifyJwt,async(req, res) => {
 route.put('/:id', verifyJwt,async(req, res) => {
     const id = req.params.id
     const data = req.body
-    console.log('From backend', data);
+    // console.log('From backend', data);
     try {
-        const softProject = await softProjectModel.findOne({ where: { id } })
+        const softProject = await softProjectItemsModel.findOne({ where: { id } })
         if (!softProject) return res.send({ error: 'Project Not Found' })
-            // const usoftProject = await softProjectModel.update({ data }, { where: { id } })
-        let days = parseFloat(data.days)
-        let refreshment = parseFloat(data.refreshment)
-        let traineesNo = parseFloat(data.traineesNo)
-        let trainersNo = parseFloat(data.trainersNo)
-        let total = parseFloat((traineesNo+trainersNo)*days*refreshment)
+            // const usoftProject = await softProjectItemsModel.update({ data }, { where: { id } })
         softProject.name = data.name
-        softProject.trainersNo = data.trainersNo
-        softProject.traineesNo = data.traineesNo
-        softProject.trainers = data.trainers
-        softProject.trainees = data.trainees
-        softProject.conferenceHall = data.conferenceHall
-        softProject.stationary = data.stationary
-        softProject.refreshment = data.refreshment
-        softProject.days = data.days
-        softProject.total = total
+        softProject.quantity = data.quantity
+        softProject.items = data.items
+        softProject.total = data.total
 
         await softProject.save()
             // usoftProject.save()
@@ -69,7 +58,7 @@ route.put('/:id', verifyJwt,async(req, res) => {
 route.delete('/:id', verifyJwt,async(req, res) => {
     const id = req.params.id
     try {
-        const softProject = await softProjectModel.findOne({ where: { id } })
+        const softProject = await softProjectItemsModel.findOne({ where: { id } })
         if (!softProject) return res.json({ error: "Project Not Found" })
         if(softProject.status==="done") return res.json({error:"This project is finished Already"})
         await softProject.destroy()
@@ -83,24 +72,13 @@ route.delete('/:id', verifyJwt,async(req, res) => {
 route.post('/', verifyJwt,async(req, res) => {
     const data = req.body
     try {
-        let days = parseFloat(data.days)
-        let refreshment = parseFloat(data.refreshment)
-        let traineesNo = parseFloat(data.traineesNo)
-        let trainersNo = parseFloat(data.trainersNo)
-        let total = parseFloat((traineesNo+trainersNo)*days*refreshment)
-        const findSoftProject = await softProjectModel.findOne({where:{name:data.name}})
+        const findSoftProject = await softProjectItemsModel.findOne({where:{name:data.name}})
         if(findSoftProject) return res.json({error:"There is a project with this name already registered"})
-        const softProject = await softProjectModel.create({
+        const softProject = await softProjectItemsModel.create({
             name:data.name,
-            trainersNo: data.trainersNo,
-            traineesNo: data.traineesNo,
-            trainers: data.trainers,
-            trainees: data.trainees,
-            conferenceHall: data.conferenceHall,
-            stationary: data.stationary,
-            refreshment: data.refreshment,
-            days: data.days,
-            total:total,
+            items:data.items,
+            quantity:data.quantity,
+            total:data.total,
 
         });
         res.json(softProject)
@@ -114,7 +92,7 @@ route.post('/check/:id', verifyJwt,async(req, res) => {
     const id = req.params.id
     const data = req.body
     try {
-        const softProject = await softProjectModel.findOne({ where: { id } })
+        const softProject = await softProjectItemsModel.findOne({ where: { id } })
         if (!softProject) return res.send({ error: "Project Not Found" })
         softProject.status='checked'
         softProject.checkedComment=data.checkedComment
@@ -129,7 +107,7 @@ route.post('/approve/:id', verifyJwt,async(req, res) => {
     const id = req.params.id
     const data = req.body
     try {
-        const softProject = await softProjectModel.findOne({ where: { id } })
+        const softProject = await softProjectItemsModel.findOne({ where: { id } })
         if (!softProject) return res.send({ error: "Project Not Found" })
         softProject.status='approved'
         softProject.approvedComment=data.approvedComment
@@ -144,7 +122,7 @@ route.post('/done/:id', verifyJwt,async(req, res) => {
     const id = req.params.id
     // const data = req.body
     try {
-        const softProject = await softProjectModel.findOne({ where: { id } })
+        const softProject = await softProjectItemsModel.findOne({ where: { id } })
         if (!softProject) return res.send({ error: "Project Not Found" })
         softProject.status='done'
         await softProject.save()
@@ -158,7 +136,7 @@ route.post('/reject/:id', verifyJwt,async(req, res) => {
     const id = req.params.id
     const data = req.body
     try {
-        const softProject = await softProjectModel.findOne({ where: { id } })
+        const softProject = await softProjectItemsModel.findOne({ where: { id } })
         if (!softProject) return res.send({ error: "Project Not Found" })
         softProject.status='rejected'
         softProject.rejectedComment=data.rejectedComment
