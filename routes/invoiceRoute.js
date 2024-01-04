@@ -125,4 +125,58 @@ route.delete('/:id', verifyJwt, async(req, res) => {
 
 
 
+route.post('/update/:id', verifyJwt, async(req, res) => {
+    try {
+        const data = req.body
+        const id = req.params.id
+        const invoice = await invoiceModel.findOne({ where: { id }, include: { model: paymentModel } })
+        if (!invoice) return res.status(404).json({ error: "invoice Not Found" })
+        const total = parseFloat(invoice.total)
+        const totalPaid = parseFloat(invoice.totalPaid)
+        const newAmount = parseFloat(data.newAmount)
+        const newTotal = total+newAmount
+        const newDueAmount = parseFloat(newTotal-totalPaid)
+        invoice.total=parseFloat(newTotal)
+        invoice.amountDue=parseFloat(newDueAmount)
+        await invoice.save()
+        res.status(200).json(invoice)
+
+    } catch (error) {
+        const msg = error.errors ? error.errors[0].message : 'An error Ocurred'
+        res.status(400).json({ error: msg })
+
+    }
+
+
+})
+
+
+route.post('/reverseupdate/:id', verifyJwt, async(req, res) => {
+    try {
+        const data = req.body
+        const id = req.params.id
+        const invoice = await invoiceModel.findOne({ where: { id }, include: { model: paymentModel } })
+        if (!invoice) return res.status(404).json({ error: "invoice Not Found" })
+        const total = parseFloat(invoice.total)
+        const totalPaid = parseFloat(invoice.totalPaid)
+        const minusAmount = parseFloat(data.minusAmount)
+        const newTotal = total-minusAmount
+        const newDueAmount = parseFloat(newTotal-totalPaid)
+        invoice.total=parseFloat(newTotal)
+        invoice.amountDue=parseFloat(newDueAmount)
+        await invoice.save()
+        res.status(200).json(invoice)
+
+    } catch (error) {
+        const msg = error.errors ? error.errors[0].message : 'An error Ocurred'
+        res.status(400).json({ error: msg })
+
+    }
+
+
+})
+
+
+
+
 module.exports = route
